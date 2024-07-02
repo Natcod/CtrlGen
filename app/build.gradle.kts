@@ -74,4 +74,7 @@ dependencies {
     implementation(libs.ui)
     implementation(libs.androidx.material)
 
+    implementation(libs.mpandroidchart)
+
+
 }
