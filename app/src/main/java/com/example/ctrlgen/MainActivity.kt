@@ -1,47 +1,60 @@
 package com.example.ctrlgen
 
+// MainActivity.kt
+
+import MainViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.ctrlgen.ui.theme.CtrlGenTheme
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
-            CtrlGenTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            MyApp()
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun MyApp(viewModel: MainViewModel = viewModel()) {
+    val sensorData by viewModel.sensorData
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CtrlGenTheme {
-        Greeting("Android")
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(text = "Generator Control", style = MaterialTheme.typography.h4)
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if (sensorData.isPlaceholder) {
+            Text(
+                text = "No data available. Showing placeholder values.",
+                style = MaterialTheme.typography.body1
+            )
+        }
+
+        OilLevelView("Oil Level", sensorData.oilLevel)
+        FuelLevelView("Fuel Level", sensorData.fuelLevel)
+        TemperatureView("Temperature", sensorData.temperature)
+        CurrentView("Current", sensorData.current)
+        VoltageView("Voltage", sensorData.voltage)
+        PressureView("Pressure", sensorData.pressure)
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = { /* Implement generator control logic */ }) {
+            Text(text = if (/* isGeneratorOn */ false) "Turn Off" else "Turn On")
+        }
     }
 }
