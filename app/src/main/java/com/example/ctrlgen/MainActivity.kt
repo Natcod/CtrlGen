@@ -1,8 +1,5 @@
 package com.example.ctrlgen
 
-// MainActivity.kt
-
-import MainViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,7 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-
+import com.example.ctrlgen.controller.MainViewModel
+import com.example.ctrlgen.views.*
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +24,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MyApp(viewModel: MainViewModel = viewModel()) {
-    val sensorData by viewModel.sensorData
+    val sensorData by remember(viewModel) { viewModel.sensorData }
 
     Column(
         modifier = Modifier
@@ -43,18 +41,18 @@ fun MyApp(viewModel: MainViewModel = viewModel()) {
                 text = "No data available. Showing placeholder values.",
                 style = MaterialTheme.typography.body1
             )
-        }
+        } else {
+            OilLevelView("Oil Level", sensorData.oilLevel)
+            FuelLevelView("Fuel Level", sensorData.fuelLevel)
+            TemperatureView("Temperature", sensorData.temperature)
+            CurrentView("Current", sensorData.current)
+            VoltageView("Voltage", sensorData.voltage)
+            PressureView("Pressure", sensorData.pressure)
 
-        OilLevelView("Oil Level", sensorData.oilLevel)
-        FuelLevelView("Fuel Level", sensorData.fuelLevel)
-        TemperatureView("Temperature", sensorData.temperature)
-        CurrentView("Current", sensorData.current)
-        VoltageView("Voltage", sensorData.voltage)
-        PressureView("Pressure", sensorData.pressure)
-
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { /* Implement generator control logic */ }) {
-            Text(text = if (/* isGeneratorOn */ false) "Turn Off" else "Turn On")
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(onClick = { /* Implement generator control logic */ }) {
+                Text(text = if (/* isGeneratorOn */ false) "Turn Off" else "Turn On")
+            }
         }
     }
 }
