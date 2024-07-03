@@ -1,15 +1,22 @@
 package com.example.ctrlgen
 
+import OilLevelView
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+//import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ctrlgen.controller.MainViewModel
 import com.example.ctrlgen.views.*
 
@@ -22,14 +29,19 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Preview
 @Composable
-fun MyApp(viewModel: MainViewModel = viewModel()) {
-    val sensorData by remember(viewModel) { viewModel.sensorData }
+fun MyApp() {
+    val viewModel = remember { MainViewModel() } // Create MainViewModel manually
+
+    val sensorData by viewModel.sensorData
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .background(Color(0xFFF5F5F5))
+            .padding(36.dp)
+            .verticalScroll(rememberScrollState()),  // Enable scrolling
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -41,7 +53,7 @@ fun MyApp(viewModel: MainViewModel = viewModel()) {
                 text = "No data available. Showing placeholder values.",
                 style = MaterialTheme.typography.body1
             )
-        } else {
+
             OilLevelView("Oil Level", sensorData.oilLevel)
             FuelLevelView("Fuel Level", sensorData.fuelLevel)
             TemperatureView("Temperature", sensorData.temperature)
@@ -56,3 +68,4 @@ fun MyApp(viewModel: MainViewModel = viewModel()) {
         }
     }
 }
+
