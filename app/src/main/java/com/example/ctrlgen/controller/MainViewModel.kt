@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.ctrlgen.network.RetrofitInstance
 import com.example.ctrlgen.model.SensorData
 import kotlinx.coroutines.launch
