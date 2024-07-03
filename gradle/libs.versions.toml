@@ -10,14 +10,21 @@ lifecycleRuntimeKtx = "2.6.1"  # Use a single version here
 activityCompose = "1.8.0"
 composeBom = "2024.04.01"
 material = "1.6.8"
+materialVersion = "1.0.5"
 mpandroidchart = "v3.1.0"
 retrofit = "2.9.0"
+runtimeLivedata = "1.0.5"
 ui = "1.6.8"
+uiVersion = "1.0.5"
+ycharts = "Tag"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }  # Unified version
 androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
+androidx-material-v105 = { module = "androidx.compose.material:material", version.ref = "materialVersion" }
+androidx-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "runtimeLivedata" }
+androidx-ui-v105 = { module = "androidx.compose.ui:ui", version.ref = "uiVersion" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -35,6 +42,9 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 
 mpandroidchart = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mpandroidchart" }
+
+
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
