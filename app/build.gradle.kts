@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application") version "8.5.0"
     id("org.jetbrains.kotlin.android") version "1.9.0"
-
 }
 
 android {
@@ -15,7 +14,7 @@ android {
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-        namespace = applicationId
+        namespace = "com.example.ctrlgen"
     }
 
     buildTypes {
@@ -69,12 +68,22 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // Add these Compose dependencies
+    implementation("androidx.compose.ui:ui:1.4.1")
+    implementation("androidx.compose.material:material:1.4.1")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.4.1")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.4.1")
+
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.ui)
     implementation(libs.androidx.material)
 
     implementation(libs.mpandroidchart)
+    implementation(libs.androidx.ui.v105)
+    implementation(libs.androidx.material.v105)
+    implementation(libs.androidx.runtime.livedata)
 
 
 }
+
