@@ -13,6 +13,6 @@ import com.github.mikephil.charting.data.LineDataSet
 @Preview
 @Composable
 fun CurrentView(label: String, value: Float, modifier: Modifier = Modifier) {
-    LineChartView(label, value, modifier)
+    LineChartView(label, listOf(value), modifier)
 }
 
