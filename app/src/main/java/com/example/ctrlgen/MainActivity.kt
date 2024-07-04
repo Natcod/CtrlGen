@@ -53,12 +53,12 @@ fun MyApp() {
                 style = MaterialTheme.typography.body1
             )
 
-            OilLevelView("Oil Level", sensorData.oilLevel)
-            FuelLevelView("Fuel Level", sensorData.fuelLevel)
+            OilLevelView("Oil Level", sensorData.oilLevel.last())
+            FuelLevelView("Fuel Level", sensorData.fuelLevel.last())
             TemperatureView("Temperature", sensorData.temperature)
-            CurrentView("Current", sensorData.current)
-            VoltageView("Voltage", sensorData.voltage)
-            PressureView("Pressure", sensorData.pressure)
+            CurrentView("Current", sensorData.current.last())
+            VoltageView("Voltage", sensorData.voltage.last())
+            PressureView("Pressure", sensorData.pressure.last())
 
             Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = { /* Implement generator control logic */ }) {
@@ -67,4 +67,5 @@ fun MyApp() {
         }
     }
 }
+
 
