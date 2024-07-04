@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.IntOffset
 import kotlin.math.roundToInt
 import com.example.ctrlgen.utils.CustomValueFormatter
 
+@Preview
 @Composable
 fun LevelView(
     label: String,
@@ -48,7 +49,13 @@ fun LevelView(
     Box(
         modifier = modifier.padding(16.dp),
         contentAlignment = Alignment.Center
+
     ) {
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = label,
+            color = Color.Black
+        )
         AndroidView(
             modifier = Modifier
                 .fillMaxWidth()
@@ -116,9 +123,5 @@ fun LevelView(
             )
         }
     }
-    Spacer(modifier = Modifier.height(8.dp))
-    Text(
-        text = label,
-        color = Color.Black
-    )
+
 }
