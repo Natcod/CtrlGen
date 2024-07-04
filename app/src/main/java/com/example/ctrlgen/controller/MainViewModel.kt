@@ -4,23 +4,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.ctrlgen.network.RetrofitInstance
 import com.example.ctrlgen.model.SensorData
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-
 class MainViewModel : ViewModel() {
     private val _sensorData = mutableStateOf(
         SensorData(
-            oilLevel = 20f,
-            fuelLevel = 50f,
-            temperature = 30f,
-            current = 10f,
-            voltage = 220f,
-            pressure = 5f,
+            oilLevel = listOf(20f),
+            fuelLevel = listOf(50f),
+            temperature = listOf(30f, 62f, 35f, 103f, 31f, 50f),
+            current = listOf(10f),
+            voltage = listOf(220f),
+            pressure = listOf(5f),
             isPlaceholder = true // Initially set as placeholder data
         )
     )
