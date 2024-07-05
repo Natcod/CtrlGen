@@ -10,9 +10,9 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 
-@Preview
+
 @Composable
 fun CurrentView(label: String, value: Float, modifier: Modifier = Modifier) {
-    LineChartView(label, listOf(value), modifier)
+    VolCurView(label = label, value = value, modifier = modifier)
 }
 
