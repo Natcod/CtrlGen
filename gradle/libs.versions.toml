@@ -14,6 +14,7 @@ materialVersion = "1.0.5"
 mpandroidchart = "v3.1.0"
 retrofit = "2.9.0"
 runtimeLivedata = "1.0.5"
+speedviewlib = "1.5.1"
 ui = "1.6.8"
 uiVersion = "1.0.5"
 ycharts = "Tag"
@@ -39,6 +40,7 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+
 ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 
 mpandroidchart = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mpandroidchart" }
