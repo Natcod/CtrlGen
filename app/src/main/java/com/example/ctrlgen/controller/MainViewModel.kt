@@ -16,9 +16,9 @@ class MainViewModel : ViewModel() {
             oilLevel = listOf(20f),
             fuelLevel = listOf(50f),
             temperature = listOf(30f, 62f, 35f, 103f, 31f, 50f),
-            current = listOf(10f),
-            voltage = listOf(220f),
-            pressure = listOf(5f),
+            current = 10f,
+            voltage = 220f,
+            pressure = 55f,
             isPlaceholder = true // Initially set as placeholder data
         )
     )
