@@ -5,5 +5,5 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun PressureView(label: String, value: Float, modifier: Modifier = Modifier) {
-    LineChartView(label, listOf(value), modifier)
+    GaugeView(label =label , value =value )
 }

@@ -11,6 +11,6 @@ import com.github.mikephil.charting.data.LineDataSet
 
 @Composable
 fun VoltageView(label: String, value: Float, modifier: Modifier = Modifier) {
-    LineChartView(label, listOf(value), modifier)
+    VolCurView(label = label, value = value, modifier = modifier)
 }
 
