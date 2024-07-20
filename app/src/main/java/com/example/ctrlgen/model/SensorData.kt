@@ -7,5 +7,6 @@ data class SensorData(
     val current: Float,
     val voltage: Float,
     val pressure:Float,
-val isPlaceholder: Boolean = false // New flag to indicate placeholder data
+    val powerRating:Float,
+   val isPlaceholder: Boolean = false // New flag to indicate placeholder data
 )
