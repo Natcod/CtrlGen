@@ -19,19 +19,17 @@ class MainViewModel : ViewModel() {
             current = 10f,
             voltage = 220f,
             pressure = 55f,
-            isPlaceholder = true // Initially set as placeholder data
+            powerRating = 220f,
+            isPlaceholder = true
         )
     )
     val sensorData: State<SensorData> = _sensorData
 
-    init {
-        fetchSensorData()
-    }
-
-    private fun fetchSensorData() {
+    fun fetchSensorData(baseUrl: String) {
         viewModelScope.launch {
             try {
-                val data = RetrofitInstance.api.getSensorData()
+                val api = RetrofitInstance.getInstance(baseUrl)
+                val data = api.getSensorData()
                 _sensorData.value = data.copy(isPlaceholder = false)
             } catch (e: IOException) {
                 // Handle network error
