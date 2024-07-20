@@ -23,16 +23,17 @@ fun VolCurView(
 ) {
     Column(
         modifier = modifier
-            .padding(26.dp)
+            .padding(3.dp)
             .wrapContentSize(),
-        horizontalAlignment = Alignment.Start
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Label above the card
         Text(
             text = label,
             style = MaterialTheme.typography.bodyLarge.copy(fontSize = 22.sp),
             color = Color.Gray,
-            modifier = Modifier.padding(bottom = 4.dp)
+            modifier = Modifier.padding(bottom = 4.dp),
+            textAlign = TextAlign.Center
         )
         // Card with value
         Card(
@@ -42,11 +43,13 @@ fun VolCurView(
                 .padding(16.dp)
                 .width(100.dp)
                 .height(60.dp),
-            elevation = CardDefaults.cardElevation(4.dp)
-        ) {
+            elevation = CardDefaults.cardElevation(4.dp),
+
+            ) {
             Box(
                 contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
             ) {
                 Text(
                     text = String.format("%.2f", value),
