@@ -84,7 +84,7 @@ dependencies {
     implementation(libs.androidx.ui.v105)
     implementation(libs.androidx.material.v105)
     implementation(libs.androidx.runtime.livedata)
-
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.1")
 
 
 }
