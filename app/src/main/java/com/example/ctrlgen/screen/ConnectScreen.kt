@@ -1,5 +1,6 @@
 package com.example.ctrlgen.screen
 
+import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -24,13 +25,14 @@ fun isValidIpAddress(ip: String): Boolean {
 
 @Composable
 fun ConnectScreen(navController: NavHostController, viewModel: MainViewModel = viewModel()) {
+    val sensorData by viewModel.sensorData.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    val errorMessage by viewModel.errorMessage.collectAsState()
     var connectionStatus by remember { mutableStateOf("Disconnected") }
     var ipAddress by remember { mutableStateOf("") }
     var isValidIp by remember { mutableStateOf(true) }
-    val sensorData by viewModel.sensorData
-    val isLoading by viewModel.isLoading
-    val errorMessage by viewModel.errorMessage
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -52,7 +54,7 @@ fun ConnectScreen(navController: NavHostController, viewModel: MainViewModel = v
                     value = ipAddress,
                     onValueChange = {
                         ipAddress = it
-                        isValidIp = isValidIpAddress(it) // Validate IP address format
+                        isValidIp = isValidIpAddress(it)
                     },
                     label = { Text("Arduino IP Address") },
                     isError = !isValidIp,
@@ -75,14 +77,19 @@ fun ConnectScreen(navController: NavHostController, viewModel: MainViewModel = v
                         onClick = {
                             if (isValidIp) {
                                 scope.launch {
+                                    saveIpAddress(context, ipAddress)
                                     viewModel.fetchSensorData("http://$ipAddress/")
                                     connectionStatus = if (sensorData.isPlaceholder) "Failed to Connect" else "Connected"
+                                    if (connectionStatus == "Connected") {
+                                        viewModel.setIpAddress(ipAddress)
+                                        navController.navigate("home")
+                                    }
                                 }
                             } else {
-                                isValidIp = false // Show error message if IP address is invalid
+                                isValidIp = false
                             }
                         },
-                        enabled = ipAddress.isNotBlank() // Disable button if IP address is blank
+                        enabled = ipAddress.isNotBlank()
                     ) {
                         Text(text = "Connect")
                     }
@@ -100,9 +107,9 @@ fun ConnectScreen(navController: NavHostController, viewModel: MainViewModel = v
 
                 if (!sensorData.isPlaceholder) {
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = "Oil Level: ${sensorData.oilLevel}")
-                    Text(text = "Fuel Level: ${sensorData.fuelLevel}")
-                    Text(text = "Temperature: ${sensorData.temperature}")
+                    Text(text = "Oil Level: ${sensorData.oilLevel.joinToString(", ")}")
+                    Text(text = "Fuel Level: ${sensorData.fuelLevel.joinToString(", ")}")
+                    Text(text = "Temperature: ${sensorData.temperature.joinToString(", ")}")
                     Text(text = "Current: ${sensorData.current}")
                     Text(text = "Voltage: ${sensorData.voltage}")
                     Text(text = "Pressure: ${sensorData.pressure}")
@@ -110,6 +117,11 @@ fun ConnectScreen(navController: NavHostController, viewModel: MainViewModel = v
             }
         }
     )
+}
+
+private fun saveIpAddress(context: Context, ipAddress: String) {
+    val sharedPreferences = context.getSharedPreferences("ip_prefs", Context.MODE_PRIVATE)
+    sharedPreferences.edit().putString("ip_address", ipAddress).apply()
 }
 
 @Preview(showBackground = true)
