@@ -1,5 +1,6 @@
 package com.example.ctrlgen.controller
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.compose.runtime.mutableStateOf
@@ -25,16 +26,41 @@ class MainViewModel : ViewModel() {
     )
     val sensorData: State<SensorData> = _sensorData
 
+    private val _isLoading = mutableStateOf(false)
+    val isLoading: State<Boolean> = _isLoading
+
+    private val _errorMessage = mutableStateOf<String?>(null)
+    val errorMessage: State<String?> = _errorMessage
+
     fun fetchSensorData(baseUrl: String) {
+        _isLoading.value = true
+        _errorMessage.value = null
+
         viewModelScope.launch {
             try {
                 val api = RetrofitInstance.getInstance(baseUrl)
                 val data = api.getSensorData()
                 _sensorData.value = data.copy(isPlaceholder = false)
+                Log.d("MainViewModel", "Data received: $data")
+                _isLoading.value = false
             } catch (e: IOException) {
                 // Handle network error
+                _sensorData.value = _sensorData.value.copy(isPlaceholder = true)
+                _errorMessage.value = "Network error: Unable to connect"
+                Log.e("MainViewModel", "Network error: ${e.message}")
+                _isLoading.value = false
             } catch (e: HttpException) {
                 // Handle HTTP error
+                _sensorData.value = _sensorData.value.copy(isPlaceholder = true)
+                _errorMessage.value = "HTTP error: ${e.message()}"
+                Log.e("MainViewModel", "HTTP error: ${e.message()}")
+                _isLoading.value = false
+            } catch (e: Exception) {
+                // Handle other errors
+                _sensorData.value = _sensorData.value.copy(isPlaceholder = true)
+                _errorMessage.value = "Error: ${e.message}"
+                Log.e("MainViewModel", "Error: ${e.message}")
+                _isLoading.value = false
             }
         }
     }

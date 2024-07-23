@@ -5,12 +5,22 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ctrlgen.controller.MainViewModel
 import kotlinx.coroutines.launch
+import java.util.regex.Pattern
+
+val IP_ADDRESS_PATTERN = Pattern.compile(
+    "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+)
+
+fun isValidIpAddress(ip: String): Boolean {
+    return IP_ADDRESS_PATTERN.matcher(ip).matches()
+}
 
 @Composable
 fun ConnectScreen(navController: NavHostController, viewModel: MainViewModel = viewModel()) {
@@ -18,6 +28,8 @@ fun ConnectScreen(navController: NavHostController, viewModel: MainViewModel = v
     var ipAddress by remember { mutableStateOf("") }
     var isValidIp by remember { mutableStateOf(true) }
     val sensorData by viewModel.sensorData
+    val isLoading by viewModel.isLoading
+    val errorMessage by viewModel.errorMessage
     val scope = rememberCoroutineScope()
 
     Scaffold(
@@ -40,7 +52,7 @@ fun ConnectScreen(navController: NavHostController, viewModel: MainViewModel = v
                     value = ipAddress,
                     onValueChange = {
                         ipAddress = it
-                        isValidIp = it.isNotBlank() // Validate IP address field is not blank
+                        isValidIp = isValidIpAddress(it) // Validate IP address format
                     },
                     label = { Text("Arduino IP Address") },
                     isError = !isValidIp,
@@ -48,7 +60,7 @@ fun ConnectScreen(navController: NavHostController, viewModel: MainViewModel = v
                 )
                 if (!isValidIp) {
                     Text(
-                        text = "IP Address is required",
+                        text = "Invalid IP Address",
                         color = MaterialTheme.colors.error,
                         style = MaterialTheme.typography.caption,
                         modifier = Modifier.align(Alignment.Start)
@@ -56,20 +68,34 @@ fun ConnectScreen(navController: NavHostController, viewModel: MainViewModel = v
                 }
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Button(
-                    onClick = {
-                        if (ipAddress.isNotBlank()) {
-                            scope.launch {
-                                viewModel.fetchSensorData("http://$ipAddress/")
-                                connectionStatus = if (sensorData.isPlaceholder) "Failed to Connect" else "Connected"
+                if (isLoading) {
+                    CircularProgressIndicator()
+                } else {
+                    Button(
+                        onClick = {
+                            if (isValidIp) {
+                                scope.launch {
+                                    viewModel.fetchSensorData("http://$ipAddress/")
+                                    connectionStatus = if (sensorData.isPlaceholder) "Failed to Connect" else "Connected"
+                                }
+                            } else {
+                                isValidIp = false // Show error message if IP address is invalid
                             }
-                        } else {
-                            isValidIp = false // Show error message if IP address is blank
-                        }
-                    },
-                    enabled = ipAddress.isNotBlank() // Disable button if IP address is blank
-                ) {
-                    Text(text = "Connect")
+                        },
+                        enabled = ipAddress.isNotBlank() // Disable button if IP address is blank
+                    ) {
+                        Text(text = "Connect")
+                    }
+                }
+
+                if (errorMessage != null) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = errorMessage ?: "",
+                        color = MaterialTheme.colors.error,
+                        style = MaterialTheme.typography.caption,
+                        modifier = Modifier.align(Alignment.Start)
+                    )
                 }
 
                 if (!sensorData.isPlaceholder) {
@@ -86,11 +112,8 @@ fun ConnectScreen(navController: NavHostController, viewModel: MainViewModel = v
     )
 }
 
-// Uncomment this part if you want to preview your composable in Android Studio
-/*
 @Preview(showBackground = true)
 @Composable
 fun PreviewConnectScreen() {
-    ConnectScreen(navController = rememberNavController())
+    ConnectScreen(navController = NavHostController(LocalContext.current))
 }
-*/
