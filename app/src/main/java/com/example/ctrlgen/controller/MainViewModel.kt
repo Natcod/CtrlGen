@@ -16,7 +16,7 @@ class MainViewModel : ViewModel() {
         SensorData(
             oilLevel = listOf(20f),
             fuelLevel = listOf(50f),
-            temperature = listOf(30f, 62f, 35f, 103f, 31f, 50f),
+            temperature = listOf(30f),
             current = 10f,
             voltage = 220f,
             pressure = 55f,
