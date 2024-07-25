@@ -12,7 +12,7 @@ import java.net.URL
 
 class DeviceControllerImpl : DeviceController {
     private val deviceStates = mutableMapOf<DeviceType, Boolean>()
-    private val serverUrl = "http://192.168.137.245/device/control"
+    private val serverUrl = "http://192.168.250.7/device/control"
 
     init {
         // Initialize all devices as off
